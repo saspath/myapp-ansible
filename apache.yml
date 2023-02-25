@@ -2,17 +2,12 @@
 - hosts: webservers 
   become: True
   tasks:
-    - name: Install packages
-      apt-get:
-        name: "httpd"
-        state: "present"
-    - name: Start Apache server
-      service:
-        name: httpd
+    - name: deploy nginx docker container
+      docker_container:
+        image: nginx:stable
+        name: nginx
         state: started
-        enabled: True
-    - name: Deploy static website
-      copy:
-        src: index.html
-        dest: /var/www/html/
+        auto_remove: true
+        ports:
+          - "8080:80"
 ...

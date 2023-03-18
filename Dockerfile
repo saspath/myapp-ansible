@@ -1,5 +1,7 @@
-FROM ubuntu:20.04
-LABEL maintainer="diodonfrost <diodon.frost@diodonfrost.me>"
+FROM node:19-bullseye
+# Create app directory
+WORKDIR /usr/src/app
+LABEL maintainer="surendra.a@pycube.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 

@@ -18,6 +18,13 @@ RUN apt-get update && apt-get install -y \
     fuse snapd snap-confine squashfuse \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir /etc/ansible/ /ansible
+RUN echo "[local]" >> /etc/ansible/hosts && \
+    echo "localhost" >> /etc/ansible/hosts
+
+RUN mkdir -p /ansible/playbooks
+WORKDIR /ansible/playbooks
+
 # Configure udev for docker integration
 RUN dpkg-divert --local --rename --add /sbin/udevadm && ln -s /bin/true /sbin/udevadm
 

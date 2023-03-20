@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM node:19-bullseye
 LABEL maintainer="diodonfrost <diodon.frost@diodonfrost.me>"
 
 ENV DEBIAN_FRONTEND=noninteractive

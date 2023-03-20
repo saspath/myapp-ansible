@@ -1,14 +1,26 @@
 FROM ubuntu:bionic
 
-# Install prerequisities for Ansible
-RUN apt-get update
-RUN apt-get -y install python3 python3-nacl python3-pip libffi-dev
+LABEL maintainer="diodonfrost <diodon.frost@diodonfrost.me>"
 
-# Install ansible
-RUN pip3 install ansible
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Copy your ansible configuration into the image
-COPY my_ansible_project /ansible
+RUN apt-get update && apt-get install -y \
+    git \
+    ansible \
+    apt-transport-https \
+    ca-certificates-java \
+    curl \
+    init \
+    openssh-server openssh-client \
+    unzip \
+    rsync \
+    sudo \
+    fuse snapd snap-confine squashfuse \
+    && rm -rf /var/lib/apt/lists/*
 
-# Run ansible to configure things
-RUN ansible-playbook /ansible/playbook.yml
+# Configure udev for docker integration
+RUN dpkg-divert --local --rename --add /sbin/udevadm && ln -s /bin/true /sbin/udevadm
+
+RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+
+ENTRYPOINT ["/sbin/init"]
